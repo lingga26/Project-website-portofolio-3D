@@ -95,16 +95,6 @@ If you wish to re-extract or change the video asset:
 node scripts/extract_frames.cjs
 ```
 This script reads `generate video web 20 detik.mp4`, extracts 192 high-fidelity `.webp` frames into `public/frames/`, and automatically balances and trims any frame count discrepancies.
-
----
-
-## 👤 Pilot / Engineer
-
-**Lingga Nugraha Mandajaya**  
-*IT Support & Software / IoT Engineer*  
-- **Email:** mandajayalingga@gmail.com  
-- **Location:** Bandung / Jakarta, Indonesia  
-
 ---
 
 ## 📄 License
