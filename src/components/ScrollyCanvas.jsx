@@ -29,21 +29,18 @@ export default function ScrollyCanvas({ onProgressUpdate, children }) {
 
     window.__lenis = lenis;
 
-    const raf = (time) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-    const reqId = requestAnimationFrame(raf);
-
-    // Sync Lenis with GSAP ScrollTrigger
+    // Connect Lenis with GSAP ScrollTrigger ticker using monotonic time
     lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+
+    const onTickerUpdate = () => {
+      lenis.raf(performance.now());
+    };
+
+    gsap.ticker.add(onTickerUpdate);
     gsap.ticker.lagSmoothing(0);
 
     return () => {
-      cancelAnimationFrame(reqId);
+      gsap.ticker.remove(onTickerUpdate);
       window.__lenis = null;
       lenis.destroy();
     };
