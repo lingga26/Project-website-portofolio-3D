@@ -7,12 +7,13 @@ let activeScrollTween = null;
 
 /**
  * Universal Smooth Scroll Helper
- * Uses GSAP's high-precision tween engine synchronized with Lenis and ScrollTrigger
+ * Uses GSAP's high-precision tween engine synchronized with Lenis and ScrollTrigger.
+ * Includes user-wheel interrupt so user can resume manual scroll at any moment.
  */
 export function smoothScrollTo(target, options = {}) {
   const lenis = window.__lenis;
   const duration = options.duration ?? 2.2;
-  const ease = options.ease ?? "power2.inOut";
+  const ease = options.ease ?? "power1.inOut";
 
   let targetPos;
   if (typeof target === 'number') {
@@ -41,10 +42,24 @@ export function smoothScrollTo(target, options = {}) {
   // Cancel any existing scroll tween
   if (activeScrollTween) {
     activeScrollTween.kill();
+    activeScrollTween = null;
   }
 
   const startY = window.pageYOffset || document.documentElement.scrollTop || 0;
   const proxy = { y: startY };
+
+  // Allow user to break out of auto-scroll immediately on manual input
+  const interruptHandler = () => {
+    if (activeScrollTween) {
+      activeScrollTween.kill();
+      activeScrollTween = null;
+    }
+    window.removeEventListener('wheel', interruptHandler);
+    window.removeEventListener('touchstart', interruptHandler);
+  };
+
+  window.addEventListener('wheel', interruptHandler, { passive: true, once: true });
+  window.addEventListener('touchstart', interruptHandler, { passive: true, once: true });
 
   activeScrollTween = gsap.to(proxy, {
     y: targetPos,
@@ -59,6 +74,8 @@ export function smoothScrollTo(target, options = {}) {
     },
     onComplete: () => {
       activeScrollTween = null;
+      window.removeEventListener('wheel', interruptHandler);
+      window.removeEventListener('touchstart', interruptHandler);
       if (options.onComplete) options.onComplete();
       ScrollTrigger.update();
     }

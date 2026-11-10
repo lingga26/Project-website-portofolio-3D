@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Terminal, Shield, Wifi, Radio, Volume2, VolumeX, Menu, X } from 'lucide-react';
 import { smoothScrollTo } from '../utils/scrollHelper.js';
+import { playBlip, setTacticalAudioMute } from '../utils/tacticalAudio.js';
 
 export default function Navbar({ scrollProgress = 0 }) {
   const [time, setTime] = useState('');
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // Keep audio state in sync
+    setTacticalAudioMute(!isAudioEnabled);
+  }, [isAudioEnabled]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -17,23 +23,12 @@ export default function Navbar({ scrollProgress = 0 }) {
     return () => clearInterval(interval);
   }, []);
 
-  const playBlip = () => {
-    if (!isAudioEnabled) return;
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.08);
-      gain.gain.setValueAtTime(0.05, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.08);
-    } catch (e) {
-      // AudioContext fallback
+  const handleAudioToggle = () => {
+    const nextState = !isAudioEnabled;
+    setIsAudioEnabled(nextState);
+    setTacticalAudioMute(!nextState);
+    if (nextState) {
+      setTimeout(() => playBlip(1040, 0.1), 50);
     }
   };
 
@@ -104,10 +99,7 @@ export default function Navbar({ scrollProgress = 0 }) {
           </div>
 
           <button
-            onClick={() => {
-              setIsAudioEnabled(!isAudioEnabled);
-              playBlip();
-            }}
+            onClick={handleAudioToggle}
             title={isAudioEnabled ? 'Disable Tactical Audio FX' : 'Enable Tactical Audio FX'}
             className={`p-1.5 border transition-all cursor-pointer ${
               isAudioEnabled

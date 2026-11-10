@@ -15,6 +15,7 @@ import {
   Zap
 } from 'lucide-react';
 import { smoothScrollTo } from '../utils/scrollHelper.js';
+import { playServoRetractionSound } from '../utils/tacticalAudio.js';
 
 export default function HudOverlay({ scrollProgress = 0, activeFrame = 0 }) {
   // Phase calculations with smooth interpolation
@@ -94,7 +95,8 @@ export default function HudOverlay({ scrollProgress = 0, activeFrame = 0 }) {
             className="inline-flex flex-col items-center space-y-2 pointer-events-auto cursor-pointer group bg-transparent border-0 p-0 outline-none" 
             onClick={(e) => {
               e.preventDefault();
-              smoothScrollTo(3000, { duration: 2.5 });
+              playServoRetractionSound();
+              smoothScrollTo(3050, { duration: 5.8, ease: "power1.inOut" });
             }}
           >
             <div className="px-5 py-2.5 border border-[#00F0FF]/40 bg-[#07090C]/85 backdrop-blur-md text-[#00F0FF] text-xs font-mono tracking-widest clip-chamfer flex items-center space-x-2.5 shadow-[0_0_20px_rgba(0,240,255,0.25)] hover:border-[#00F0FF] hover:bg-[#00F0FF]/15 transition-all group-hover:scale-105 active:scale-95">
@@ -102,7 +104,7 @@ export default function HudOverlay({ scrollProgress = 0, activeFrame = 0 }) {
               <ChevronDown className="w-4 h-4 animate-bounce text-[#00F0FF]" />
             </div>
             <span className="text-[10px] font-mono text-gray-500 tracking-wider">
-              [ CLICK TO AUTORUN // OR SCROLL MANUALLY ]
+              [ CINEMATIC RETRACTION // CLICK TO RUN ]
             </span>
           </button>
         </div>
