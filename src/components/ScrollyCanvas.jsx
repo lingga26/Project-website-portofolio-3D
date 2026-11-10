@@ -6,7 +6,7 @@ import Lenis from "lenis";
 gsap.registerPlugin(ScrollTrigger);
 
 const TOTAL_FRAMES = 192;
-const getFramePath = (idx) => `/frames/frame_${String(idx).padStart(4, "0")}.webp`;
+const getFramePath = (idx) => `${import.meta.env.BASE_URL}frames/frame_${String(idx).padStart(4, "0")}.webp`;
 
 export default function ScrollyCanvas({ onProgressUpdate, children }) {
   const containerRef = useRef(null);
