@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Terminal, Shield, Wifi, Radio, Volume2, VolumeX, Menu, X } from 'lucide-react';
+import { smoothScrollTo } from '../utils/scrollHelper.js';
 
 export default function Navbar({ scrollProgress = 0 }) {
   const [time, setTime] = useState('');
@@ -39,10 +40,7 @@ export default function Navbar({ scrollProgress = 0 }) {
   const scrollTo = (id) => {
     playBlip();
     setIsMobileMenuOpen(false);
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    smoothScrollTo(id, { duration: 1.8 });
   };
 
   return (
@@ -120,12 +118,12 @@ export default function Navbar({ scrollProgress = 0 }) {
             {isAudioEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
           </button>
 
-          <a
-            href="#comms-section"
-            className="hidden sm:inline-block px-3 py-1.5 bg-[#00F0FF] hover:bg-[#00D2DF] text-[#07090C] font-bold text-[11px] clip-chamfer-sm transition-all tracking-wider shadow-[0_0_15px_rgba(0,240,255,0.4)]"
+          <button
+            onClick={() => scrollTo('comms-section')}
+            className="hidden sm:inline-block px-3 py-1.5 bg-[#00F0FF] hover:bg-[#00D2DF] text-[#07090C] font-bold text-[11px] clip-chamfer-sm transition-all tracking-wider shadow-[0_0_15px_rgba(0,240,255,0.4)] cursor-pointer"
           >
             COMMS UPLINK
-          </a>
+          </button>
 
           {/* Mobile Hamburger Button */}
           <button

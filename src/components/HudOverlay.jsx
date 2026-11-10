@@ -14,6 +14,7 @@ import {
   Server,
   Zap
 } from 'lucide-react';
+import { smoothScrollTo } from '../utils/scrollHelper.js';
 
 export default function HudOverlay({ scrollProgress = 0, activeFrame = 0 }) {
   // Phase calculations with smooth interpolation
@@ -35,8 +36,7 @@ export default function HudOverlay({ scrollProgress = 0, activeFrame = 0 }) {
   const phase3Opacity = Math.max(0, Math.min(1, (scrollProgress - 0.68) / 0.14));
 
   const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    smoothScrollTo(id, { duration: 1.8 });
   };
 
   return (
@@ -89,13 +89,16 @@ export default function HudOverlay({ scrollProgress = 0, activeFrame = 0 }) {
           </p>
 
           {/* Interactive Scrub Prompt */}
-          <div className="inline-flex flex-col items-center space-y-2 pointer-events-auto cursor-pointer" onClick={() => window.scrollBy({ top: 600, behavior: 'smooth' })}>
-            <div className="px-4 py-2 border border-[#00F0FF]/40 bg-[#07090C]/80 backdrop-blur-md text-[#00F0FF] text-xs font-mono tracking-widest clip-chamfer flex items-center space-x-2 shadow-[0_0_15px_rgba(0,240,255,0.2)] hover:border-[#00F0FF] transition-all">
+          <div 
+            className="inline-flex flex-col items-center space-y-2 pointer-events-auto cursor-pointer group" 
+            onClick={() => smoothScrollTo(2950, { duration: 2.5 })}
+          >
+            <div className="px-5 py-2.5 border border-[#00F0FF]/40 bg-[#07090C]/85 backdrop-blur-md text-[#00F0FF] text-xs font-mono tracking-widest clip-chamfer flex items-center space-x-2.5 shadow-[0_0_20px_rgba(0,240,255,0.25)] hover:border-[#00F0FF] hover:bg-[#00F0FF]/15 transition-all group-hover:scale-105 active:scale-95">
               <span>SCRUB TO DEPLOY RETRACTION</span>
               <ChevronDown className="w-4 h-4 animate-bounce text-[#00F0FF]" />
             </div>
             <span className="text-[10px] font-mono text-gray-500 tracking-wider">
-              [ SCROLL DOWN // PROGRESS {(scrollProgress * 100).toFixed(0)}% ]
+              [ CLICK TO AUTORUN // OR SCROLL MANUALLY ]
             </span>
           </div>
         </div>

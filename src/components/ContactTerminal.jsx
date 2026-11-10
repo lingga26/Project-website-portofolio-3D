@@ -12,6 +12,7 @@ import {
   ExternalLink,
   Radio
 } from 'lucide-react';
+import { smoothScrollTo } from '../utils/scrollHelper.js';
 
 const GithubIcon = ({ className = "w-4 h-4" }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -320,16 +321,16 @@ export default function ContactTerminal() {
                   <ExternalLink className="w-3 h-3 text-gray-500" />
                 </a>
 
-                <a
-                  href="#hero-section"
-                  className="p-3 bg-black/40 border border-white/10 hover:border-[#D97736] hover:text-[#D97736] transition-all flex items-center justify-between clip-chamfer-sm"
+                <button
+                  onClick={() => smoothScrollTo(0, { duration: 2.0 })}
+                  className="p-3 bg-black/40 border border-white/10 hover:border-[#D97736] hover:text-[#D97736] transition-all flex items-center justify-between clip-chamfer-sm cursor-pointer text-left"
                 >
                   <div className="flex items-center space-x-2">
                     <FileText className="w-4 h-4" />
-                    <span>DOSSIER / CV</span>
+                    <span>DOSSIER / TOP</span>
                   </div>
                   <ExternalLink className="w-3 h-3 text-gray-500" />
-                </a>
+                </button>
               </div>
             </div>
           </div>

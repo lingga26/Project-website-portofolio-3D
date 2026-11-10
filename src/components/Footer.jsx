@@ -1,9 +1,10 @@
 import React from 'react';
 import { Shield, ChevronUp, Terminal, Radio } from 'lucide-react';
+import { smoothScrollTo } from '../utils/scrollHelper.js';
 
 export default function Footer() {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    smoothScrollTo(0, { duration: 2.0 });
   };
 
   return (

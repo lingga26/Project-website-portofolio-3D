@@ -27,6 +27,8 @@ export default function ScrollyCanvas({ onProgressUpdate, children }) {
       touchMultiplier: 1.5,
     });
 
+    window.__lenis = lenis;
+
     const raf = (time) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -42,6 +44,7 @@ export default function ScrollyCanvas({ onProgressUpdate, children }) {
 
     return () => {
       cancelAnimationFrame(reqId);
+      window.__lenis = null;
       lenis.destroy();
     };
   }, []);

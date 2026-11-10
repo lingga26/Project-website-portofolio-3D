@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Zap
 } from 'lucide-react';
+import { smoothScrollTo } from '../utils/scrollHelper.js';
 
 const missionProjects = [
   {
@@ -356,13 +357,15 @@ export default function ProjectsTimeline() {
               </div>
 
               <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
-                <a
-                  href="#comms-section"
-                  onClick={() => setSelectedMission(null)}
-                  className="px-4 py-2 bg-[#00F0FF] hover:bg-[#00D2DF] text-black font-bold clip-chamfer-sm text-xs tracking-wider transition-all"
+                <button
+                  onClick={() => {
+                    setSelectedMission(null);
+                    smoothScrollTo('comms-section', { duration: 1.8 });
+                  }}
+                  className="px-4 py-2 bg-[#00F0FF] hover:bg-[#00D2DF] text-black font-bold clip-chamfer-sm text-xs tracking-wider transition-all cursor-pointer"
                 >
                   DISCUSS SIMILAR DEPLOYMENT
-                </a>
+                </button>
                 <button
                   onClick={() => setSelectedMission(null)}
                   className="px-4 py-2 bg-white/10 hover:bg-white/20 text-gray-300 clip-chamfer-sm text-xs cursor-pointer"
